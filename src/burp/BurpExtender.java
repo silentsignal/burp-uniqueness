@@ -10,12 +10,12 @@ import javax.swing.*;
 public class BurpExtender implements IBurpExtender, ITab, ISessionHandlingAction
 {
 	private IExtensionHelpers helpers;
+	private final static String NAME = "Uniqueness";
 	private final static String[] helpText = {
 		"<html><body>By clicking on <b>Compile</b> above, the regular expression will be compiled.</body></html>",
 		"If no error messages are shown, it was successful, and it's ready",
 		"for use through the " + NAME + "session handling action."
 	};
-	private final static String NAME = "Uniqueness";
 	private Pattern regexp = null;
 	private final static AtomicInteger counter = new AtomicInteger();
 
