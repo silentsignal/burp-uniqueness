@@ -45,11 +45,17 @@ public class BurpExtender implements IBurpExtender, ITab, ISessionHandlingAction
 	public void performAction(final IHttpRequestResponse currentRequest,
 			final IHttpRequestResponse[] macroItems) {
 		if (regexp == null) return;
-		String req = helpers.bytesToString(currentRequest.getRequest());
-		Matcher m = regexp.matcher(req);
+		IRequestInfo ri = helpers.analyzeRequest(currentRequest);
+		int bo = ri.getBodyOffset();
+		byte[] req = currentRequest.getRequest();
+		byte[] body = new byte[req.length - bo];
+		System.arraycopy(req, bo, body, 0, body.length);
+		String b = helpers.bytesToString(body);
+		Matcher m = regexp.matcher(b);
 		if (!m.find()) return;
-		req = req.substring(0, m.start(1)) + counter.getAndIncrement() + req.substring(m.end(1));
-		currentRequest.setRequest(helpers.stringToBytes(req));
+		b = b.substring(0, m.start(1)) + counter.getAndIncrement() + b.substring(m.end(1));
+		currentRequest.setRequest(helpers.buildHttpMessage(
+					ri.getHeaders(), helpers.stringToBytes(b)));
 	}
 
 	// End of interfaces
