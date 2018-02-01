@@ -1,6 +1,8 @@
 Uniqueness plugin for Burp Suite
 ================================
 
+[![Build Status](https://travis-ci.org/silentsignal/burp-uniqueness.svg?branch=master)](https://travis-ci.org/silentsignal/burp-uniqueness)
+
 Makes requests unique based on regular expressions.
 
 Usage

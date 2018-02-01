@@ -1,0 +1,12 @@
+language: java
+sudo: false
+
+jdk:
+    - oraclejdk8
+    - oraclejdk7
+    - openjdk6
+os:
+    - linux
+
+script:
+    - ant
