@@ -14,7 +14,8 @@ public class BurpExtender implements IBurpExtender, ITab, ISessionHandlingAction
 	private final static String[] helpText = {
 		"<html><body>By clicking on <b>Compile</b> above, the regular expression will be compiled.</body></html>",
 		"If no error messages are shown, it was successful, and it's ready",
-		"for use through the " + NAME + " session handling action."
+		"for use through the " + NAME + " session handling action.",
+		" "
 	};
 	private Pattern regexp = null;
 	private final static AtomicInteger counter = new AtomicInteger();
@@ -131,6 +132,36 @@ public class BurpExtender implements IBurpExtender, ITab, ISessionHandlingAction
 			cs.gridy++;
 			panel.add(new JLabel(line), cs);
 		}
+
+		cs.gridy++; cs.gridwidth = 1;
+		panel.add(new JLabel("Counter:"), cs);
+
+		cs.gridx = 1;
+		final JSpinner spCounter = new JSpinner();
+		panel.add(spCounter, cs);
+
+		cs.gridx = 2;
+		final JButton btnSetCounter = new JButton("Set");
+		panel.add(btnSetCounter, cs);
+		btnSetCounter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				counter.set(((SpinnerNumberModel)spCounter.getModel()).getNumber().intValue());
+			}
+		});
+
+		cs.gridy++;
+		final JButton btnGetCounter = new JButton("Get");
+		panel.add(btnGetCounter, cs);
+		btnGetCounter.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				spCounter.setValue(counter.get());
+			}
+		});
+
+		cs.gridx = 0; cs.gridwidth = 2;
+		panel.add(new JLabel("Use the buttons on the right to get/set the counter."), cs);
 	}
 
 	private static int checkBoxMapToFlags(Map<RegExpFlag, JCheckBox> cbFlags) {
