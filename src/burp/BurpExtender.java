@@ -53,10 +53,18 @@ public class BurpExtender implements IBurpExtender, ITab, ISessionHandlingAction
 		System.arraycopy(req, bo, body, 0, body.length);
 		String b = helpers.bytesToString(body);
 		Matcher m = regexp.matcher(b);
-		if (!m.find()) return;
-		b = b.substring(0, m.start(1)) + counter.getAndIncrement() + b.substring(m.end(1));
+		StringBuilder sb = new StringBuilder();
+		int pos = 0;
+		int ctr = counter.getAndIncrement();
+		while (m.find(pos)) {
+			sb.append(b.substring(pos, m.start(1)));
+			sb.append(ctr);
+			pos = m.end(1);
+		}
+		if (pos == 0) return;
+		sb.append(b.substring(pos));
 		currentRequest.setRequest(helpers.buildHttpMessage(
-					ri.getHeaders(), helpers.stringToBytes(b)));
+					ri.getHeaders(), helpers.stringToBytes(sb.toString())));
 	}
 
 	// End of interfaces
